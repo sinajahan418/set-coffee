@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
+.title {
+  direction: rtl;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px;
+  padding-top: 17px;
+}
+.title div {
+  display: flex;
+  flex-direction: column;
+}
+
+#p {
+  font-size: 36px;
+}
+#span {
+  width: 300px;
+  text-align: center;
+  padding-left: 65px;
+}
+
+.title a {
+  width: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main{
+  display: grid;
+  grid-template-columns: repeat(4 , 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 10px;
+  text-align: center;
+}

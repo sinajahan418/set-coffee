@@ -1,5 +1,7 @@
 import "./globals.css";
+import AosInit from "@/utils/Aos";
 import { Inter } from "next/font/google";
+import ScroleBtn from "@/utils/ScroleBtn";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +16,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fa">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AosInit />
+        {children}
+        <ScroleBtn />
+      </body>
     </html>
   );
 }
