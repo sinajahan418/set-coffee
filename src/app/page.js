@@ -1,17 +1,18 @@
-import Footer from "@/component/madules/footer/Footer";
-import Navbar from "@/component/madules/navbar/Navbar";
-import Articles from "@/component/templates/index/articles/Articles";
-import Baner from "@/component/templates/index/baner/Baner";
-import Latest from "@/component/templates/index/latest/Latest";
-import Promote from "@/component/templates/index/promote/Promote";
-import Image from "next/image";
-// import styles from "./page.module.css";
+import Footer from "@/components/modules/footer/Footer";
+import Navbar from "@/components/modules/navbar/Navbar";
+import Articles from "@/components/templates/index/articles/Articles";
+import Banner from "@/components/templates/index/banner/Banner";
+import Latest from "@/components/templates/index/latest/Latest";
+import Promote from "@/components/templates/index/promote/Promote";
+import { authUser } from "@/utils/auth";
 
-export default function Home() {
+export default async function Home() {
+  const user = await authUser();
+
   return (
     <>
-      <Navbar />
-      <Baner />
+      <Navbar isLogin={user ? true : false} />
+      <Banner />
       <Latest />
       <Promote />
       <Articles />

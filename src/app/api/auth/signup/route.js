@@ -1,46 +1,48 @@
-import { genereatAcsesToken, hashPassword } from "@/utils/auth";
-import connectToDB from "../../../../../config/db";
-import UserModel from "../../../../../models/User";
-import { headers } from "next/dist/client/components/headers";
+import connectToDB from "@/configs/db";
+import UserModel from "@/models/User";
+import { generateAccessToken, hashPassword } from "@/utils/auth";
+import { roles } from "@/utils/constants";
 
 export async function POST(req) {
   connectToDB();
-
   const body = await req.json();
   const { name, phone, email, password } = body;
 
-  //validation
+  // Validation (You)
 
-  const isValidUser = await UserModel.findOne({
-    $or: [{ name }, { phone }, { email }, { password }],
+  const isUserExist = await UserModel.findOne({
+    $or: [{ name }, { email }, { phone }],
   });
 
-  if (isValidUser) {
+  if (isUserExist) {
     return Response.json(
-      { massege: "name or phone or email exsis " },
-      { status: 422 }
+      {
+        message: "The username or email or phone exist already !!",
+      },
+      {
+        status: 422,
+      }
     );
   }
 
-  const hashedPassword = hashPassword(password);
-  const token = genereatAcsesToken({ name });
+  const hashedPassword = await hashPassword(password);
+  const accessToken = generateAccessToken({ name });
 
-  const users = UserModel.find({});
-  console.log(users);
+  const users = await UserModel.find({});
 
   await UserModel.create({
     name,
-    phone,
     email,
-    password: hashPassword,
-    role: users.length > 0 ? "USER" : "ADMIN",
+    phone,
+    password: hashedPassword,
+    role: users.length > 0 ? roles.USER : roles.ADMIN,
   });
 
   return Response.json(
-    { message: "Success Response :))" },
+    { message: "User signed up successfully :))" },
     {
       status: 201,
-      headers: { "Set-Coockie": `token=${token};path=/;httpOnly=true` },
+      headers: { "Set-Cookie": `token=${accessToken};path=/;httpOnly=true` },
     }
   );
 }
